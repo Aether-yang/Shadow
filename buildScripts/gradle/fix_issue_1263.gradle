@@ -58,11 +58,15 @@ def copyApkAfterTask(t) {
         def outputFile = metadata.getJSONArray("elements").getJSONObject(0).getString("outputFile")
         def apkFile = new File(metadataFile.parentFile, outputFile)
         def testRelativePath = redirectFile.relativePath(apkFile)
-        def needCopy = !testRelativePath.matches("^(\\.\\.${File.separatorChar})+outputs${File.separatorChar}.+")
+        def needCopy = !testRelativePath.matches("^\\(\\.\\.${File.separatorChar})+outputs${File.separatorChar}.+")
+        getLogger().warn("needCopy=${needCopy}, needCopy={}", needCopy)
         if (needCopy) {
-            def matchPath = new File("/build/intermediates").toPath().toString()
-            def intermediatesDir = new File(apkFile.toPath().normalize().toString().find("^.+?$matchPath"))
+            def matchPath = new File("\\build\\intermediates").toPath().toString()
+            project.logger.warn("matchPath={matchPath}, regr={}", "^.+?\\\\build\\\\intermediates")
+            def intermediatesDir = new File(apkFile.toPath().normalize().toString().find("^.+?\\\\build\\\\intermediates"))
+            getLogger().warn("intermediatesDir={}", intermediatesDir)
             def outputsDir = new File(intermediatesDir.parentFile, "outputs")
+            project.logger.warn("outputsDir={}", outputsDir)
             def r = copy {
                 from intermediatesDir
                 into outputsDir
