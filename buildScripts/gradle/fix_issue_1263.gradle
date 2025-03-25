@@ -61,12 +61,12 @@ def copyApkAfterTask(t) {
         def needCopy = !testRelativePath.matches("^\\(\\.\\.${File.separatorChar})+outputs${File.separatorChar}.+")
         getLogger().warn("needCopy=${needCopy}, needCopy={}", needCopy)
         if (needCopy) {
-            def matchPath = new File("\\build\\intermediates").toPath().toString()
-            project.logger.warn("matchPath={matchPath}, regr={}", "^.+?\\\\build\\\\intermediates")
+            def matchPath = new File("/build/intermediates").toPath().toString()
+            project.logger.warn("matchPath=${matchPath}, newPath={}", new File("\\build\\intermediates").toPath().toString())
+            project.logger.warn("apkPath=${apkFile.toPath().normalize().toString()}, regr=${"^.+?\\\\build\\\\intermediates"}")
             def intermediatesDir = new File(apkFile.toPath().normalize().toString().find("^.+?\\\\build\\\\intermediates"))
-            getLogger().warn("intermediatesDir={}", intermediatesDir)
             def outputsDir = new File(intermediatesDir.parentFile, "outputs")
-            project.logger.warn("outputsDir={}", outputsDir)
+            project.logger.warn("intermediatesDir=${intermediatesDir}, outputsDir=${outputsDir}")
             def r = copy {
                 from intermediatesDir
                 into outputsDir
@@ -75,6 +75,7 @@ def copyApkAfterTask(t) {
             if (r.didWork) {
                 getLogger().info("copy apk from ${intermediatesDir.path} to ${outputsDir.path}")
             }
+            getLogger().warn("didWork=${r.didWork}")
         }
     }
 }
