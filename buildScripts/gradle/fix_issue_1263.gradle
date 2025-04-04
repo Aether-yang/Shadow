@@ -64,7 +64,12 @@ def copyApkAfterTask(t) {
             def matchPath = new File("/build/intermediates").toPath().toString()
             project.logger.warn("matchPath=${matchPath}, newPath={}", new File("\\build\\intermediates").toPath().toString())
             project.logger.warn("apkPath=${apkFile.toPath().normalize().toString()}, regr=${"^.+?\\\\build\\\\intermediates"}")
-            def intermediatesDir = new File(apkFile.toPath().normalize().toString().find("^.+?\\\\build\\\\intermediates"))
+            def intermediates = apkFile.toPath().normalize().toString().find("^.+?\\\\build\\\\intermediates")
+            if(intermediates == null) {
+                project.logger.warn("intermediates=${intermediates}, intermediates=${intermediates}")
+                return
+            }
+            def intermediatesDir = new File(intermediates)
             def outputsDir = new File(intermediatesDir.parentFile, "outputs")
             project.logger.warn("intermediatesDir=${intermediatesDir}, outputsDir=${outputsDir}")
             def r = copy {

@@ -47,7 +47,8 @@
 
         <activity android:name="com.tencent.shadow.sample.plugin.app.lib.usecases.packagemanager.TestPackageManagerActivity" />
 
-        <receiver android:name="com.tencent.shadow.sample.plugin.app.lib.usecases.receiver.MyReceiver">
+        <receiver android:name="com.tencent.shadow.sample.plugin.app.lib.usecases.receiver.MyReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.tencent.test.action" />
             </intent-filter>
