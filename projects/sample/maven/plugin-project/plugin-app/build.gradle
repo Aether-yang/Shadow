@@ -2,14 +2,43 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.tencent.shadow.plugin'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
+    buildToolsVersion "30.0.3"
+    ndkVersion "25.2.9519653"
     defaultConfig {
         applicationId "com.tencent.shadow.sample.plugin"
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion 26
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"  //可选：指定 C++ 标准
+                abiFilters "armeabi-v7a" , "arm64-v8a", "x86", "x86_64" //, "armeabi", "mips", "mips64"
+            }
+        }
+        ndk {
+            //noinspection ChromeOsAbiSupport
+            abiFilters "arm64-v8a", "armeabi-v7a" //, "x86_64", "x86"
+        }
+    }
+
+    /*ndk {//指定生成的lib，比如此时生成 libNdkTest.so
+        moduleName   "NdkTest"
+    }*/
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"  // CMakeLists.txt 路径
+            version "3.29.2"                    // CMake 版本
+        }
+    }
+    sourceSets {
+        main {
+            jni.srcDirs = ['src/main/cpp']
+            jniLibs.srcDirs = ['libs']
+        }
     }
 
     buildTypes {
@@ -21,12 +50,19 @@ android {
             signingConfig.initWith(buildTypes.debug.signingConfig)
         }
     }
-
+    //flavorDimensions [*flavorDimensionList] //"plugin"]
     // 将插件applicationId设置为和宿主相同
     productFlavors {
         plugin {
             applicationId "com.tencent.shadow.sample.host"
         }
+    }
+    lintOptions {
+        abortOnError false
+    }
+    // 将插件的资源ID分区改为和宿主0x7F不同的值
+    aaptOptions {
+        additionalParameters "--package-id", "0x7E", "--allow-reserved-package-id"
     }
 }
 
