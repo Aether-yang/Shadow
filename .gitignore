@@ -9,3 +9,11 @@
 /captures
 .externalNativeBuild
 .gradletasknamecache
+# Log/OS Files
+*.log
+# Android Studio generated files and folders
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+output.json

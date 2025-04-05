@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.RemoteException;
+import android.util.Pair;
 
 import com.tencent.shadow.core.common.Logger;
 import com.tencent.shadow.core.common.LoggerFactory;
@@ -17,6 +18,7 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +45,7 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
         final PluginConfig pluginConfig = installPluginFromZip(new File(zip), hash);
         final String uuid = pluginConfig.UUID;
         List<Future> futures = new LinkedList<>();
+        List<Future<Pair<String, String>>> extractSoFutures = new LinkedList<>();
         if (pluginConfig.runTime != null && pluginConfig.pluginLoader != null) {
             Future odexRuntime = mFixedPool.submit(new Callable() {
                 @Override
@@ -74,6 +77,7 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
                 }
             });
             futures.add(extractSo);
+            extractSoFutures.add(extractSo);
             if (odex) {
                 Future odexPlugin = mFixedPool.submit(new Callable() {
                     @Override
@@ -89,7 +93,13 @@ public abstract class FastPluginManager extends PluginManagerThatUseDynamicLoade
         for (Future future : futures) {
             future.get();
         }
-        onInstallCompleted(pluginConfig);
+        Map<String, String> soDirMap = new HashMap<>();
+        for (Future<Pair<String, String>> future : extractSoFutures) {
+            Pair<String, String> pair = future.get();
+            soDirMap.put(pair.first, pair.second);
+        }
+        onInstallCompleted(pluginConfig, soDirMap);
+        //onInstallCompleted(pluginConfig);
 
         return getInstalledPlugins(1).get(0);
     }
