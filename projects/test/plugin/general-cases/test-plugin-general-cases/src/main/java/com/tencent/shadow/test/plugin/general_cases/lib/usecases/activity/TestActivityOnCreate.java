@@ -20,8 +20,11 @@ package com.tencent.shadow.test.plugin.general_cases.lib.usecases.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
+import com.jeanboy.demo.jnitest.NdkTest;
 import com.tencent.shadow.test.plugin.general_cases.R;
 import com.tencent.shadow.test.plugin.general_cases.lib.gallery.util.ToastUtil;
 
@@ -30,6 +33,8 @@ public class TestActivityOnCreate extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("MainActivity", "getTimestampMillis=" + NdkTest.getTimestampMillis());
+
         setContentView(R.layout.layout_activity_lifecycle);
         ToastUtil.showToast(this, "onCreate");
     }

@@ -22,8 +22,12 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.jeanboy.demo.jnitest.NdkTest;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +46,7 @@ public class TestApplication extends Application {
         sInstence = this;
         isOnCreate = true;
         super.onCreate();
+        Log.i("MainActivity", "getTimestampMillis=" + NdkTest.getTimestampMillis());
 
         registerActivityLifecycleCallbacks(alc);
 
