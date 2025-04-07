@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -32,6 +33,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.jeanboy.demo.jnitest.NdkTest;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.ryg.expandable.ui.PinnedHeaderExpandableListView;
 import com.ryg.expandable.ui.PinnedHeaderExpandableListView.OnHeaderUpdateListener;
@@ -63,6 +65,7 @@ public class MainActivity extends Activity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main);
+        Log.i("MainActivity", "getTimestampMillis=" + NdkTest.getTimestampMillis());
         expandableListView = findViewById(R.id.expandablelist);
         stickyLayout = findViewById(R.id.sticky_layout);
         slidingMenu = findViewById(R.id.slidingmenu);

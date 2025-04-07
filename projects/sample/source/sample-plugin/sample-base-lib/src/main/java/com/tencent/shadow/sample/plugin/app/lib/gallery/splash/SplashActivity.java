@@ -21,8 +21,11 @@ package com.tencent.shadow.sample.plugin.app.lib.gallery.splash;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 
+import com.jeanboy.demo.jnitest.NdkTest;
 import com.tencent.shadow.sample.plugin.app.lib.base.R;
 import com.tencent.shadow.sample.plugin.app.lib.gallery.MainActivity;
 
@@ -34,7 +37,7 @@ public class SplashActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_splash);
-
+        Log.i("MainActivity", "getTimestampMillis=" + NdkTest.getTimestampMillis());
         mSplashAnimation = new SplashAnimation(this);
         mSplashAnimation.start();
 

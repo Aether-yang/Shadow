@@ -19,6 +19,9 @@
 package com.tencent.shadow.sample.plugin.app.lib.gallery;
 
 import android.app.Application;
+import android.util.Log;
+
+import com.jeanboy.demo.jnitest.NdkTest;
 
 public class TestApplication extends Application {
 
@@ -31,6 +34,7 @@ public class TestApplication extends Application {
         sInstence = this;
         isOnCreate = true;
         super.onCreate();
+        Log.i("MainActivity", "getTimestampMillis=" + NdkTest.getTimestampMillis());
     }
 
     public static TestApplication getInstance() {

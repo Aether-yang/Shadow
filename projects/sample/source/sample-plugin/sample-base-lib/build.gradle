@@ -2,12 +2,24 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion project.COMPILE_SDK_VERSION
+    ndkVersion "25.2.9519653"
 
     defaultConfig {
         minSdkVersion project.MIN_SDK_VERSION
         targetSdkVersion project.TARGET_SDK_VERSION
         versionCode project.VERSION_CODE
         versionName project.VERSION_NAME
+        //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++11"  //可选：指定 C++ 标准
+                abiFilters "armeabi-v7a" , "arm64-v8a", "x86", "x86_64" //, "armeabi", "mips", "mips64"
+            }
+        }
+        ndk {
+            //noinspection ChromeOsAbiSupport
+            abiFilters "arm64-v8a", "armeabi-v7a" //, "x86_64", "x86"
+        }
     }
 
     buildTypes {
@@ -21,6 +33,21 @@ android {
         }
     }
 
+    /*ndk {//指定生成的lib，比如此时生成 libNdkTest.so
+        moduleName   "NdkTest"
+    }*/
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"  // CMakeLists.txt 路径
+            version "3.29.2"                    // CMake 版本
+        }
+    }
+    sourceSets {
+        main {
+            jni.srcDirs = ['src/main/cpp']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
     lintOptions {
         abortOnError false
     }
